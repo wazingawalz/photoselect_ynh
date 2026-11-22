@@ -1,0 +1,8 @@
+#!/bin/bash
+source /usr/share/yunohost/helpers
+ynh_script_progression --message="Upgrading PhotoSelect..." --weight=1
+install_dir="$(ynh_app_setting_get --app="$app" --key=install_dir)"
+cp -a ../sources/. "$install_dir/"
+chown -R root: "$install_dir"
+ynh_add_nginx_config
+ynh_add_fpm_config

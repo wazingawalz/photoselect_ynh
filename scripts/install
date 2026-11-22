@@ -1,0 +1,32 @@
+#!/bin/bash
+# PhotoSelect initial YunoHost package scaffold.
+source /usr/share/yunohost/helpers
+
+ynh_script_progression --message="Installing PhotoSelect..." --weight=1
+
+ynh_app_setting_set --app="$app" --key=domain --value="$domain"
+ynh_app_setting_set --app="$app" --key=path --value="$path"
+
+install_dir="/var/www/$app"
+data_dir="/var/lib/$app"
+ynh_app_setting_set --app="$app" --key=install_dir --value="$install_dir"
+ynh_app_setting_set --app="$app" --key=data_dir --value="$data_dir"
+
+mkdir -p "$install_dir" "$data_dir/storage" "$data_dir/previews" "$data_dir/tmp"
+cp -a ../sources/. "$install_dir/"
+chown -R root: "$install_dir"
+chmod -R 755 "$install_dir"
+chown -R "$app":www-data "$data_dir"
+chmod 750 "$data_dir" "$data_dir/storage" "$data_dir/previews" "$data_dir/tmp"
+
+# Private application data must never be placed under the public web root.
+cat > "$install_dir/config.php" <<EOF
+<?php
+define('PHOTOSELECT_DATA', '$data_dir');
+EOF
+chown root:www-data "$install_dir/config.php"
+chmod 640 "$install_dir/config.php"
+
+ynh_add_nginx_config
+ynh_add_fpm_config
+ynh_script_progression --message="PhotoSelect files installed." --weight=1

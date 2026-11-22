@@ -1,0 +1,6 @@
+#!/bin/bash
+source /usr/share/yunohost/helpers
+install_dir="$(ynh_app_setting_get --app="$app" --key=install_dir)"
+data_dir="$(ynh_app_setting_get --app="$app" --key=data_dir)"
+ynh_backup "$install_dir"
+ynh_backup "$data_dir"

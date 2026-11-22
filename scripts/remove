@@ -1,0 +1,7 @@
+#!/bin/bash
+source /usr/share/yunohost/helpers
+ynh_script_progression --message="Removing PhotoSelect..." --weight=1
+ynh_remove_nginx_config
+ynh_remove_fpm_config
+# User data is deliberately retained unless the administrator explicitly removes it.
+ynh_script_progression --message="PhotoSelect application removed; data retained in /var/lib/$app." --weight=1

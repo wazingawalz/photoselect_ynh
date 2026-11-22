@@ -1,0 +1,6 @@
+#!/bin/bash
+source /usr/share/yunohost/helpers
+ynh_script_progression --message="Restoring PhotoSelect..." --weight=1
+ynh_restore
+ynh_add_nginx_config
+ynh_add_fpm_config
